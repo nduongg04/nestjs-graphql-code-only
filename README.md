@@ -4,43 +4,48 @@ This project is a NestJS application that uses GraphQL for API interactions. It 
 
 ## Table of Contents
 
-- [Description](#description)
-- [Installation](#installation)
-- [Usage](#usage)
-- [GraphQL Schema](#graphql-schema)
-- [Resolvers](#resolvers)
-- [Services](#services)
-- [Contributing](#contributing)
-- [License](#license)
+-   [Description](#description)
+-   [Installation](#installation)
+-   [Usage](#usage)
+-   [GraphQL Schema](#graphql-schema)
+-   [Resolvers](#resolvers)
+-   [Services](#services)
+-   [Contributing](#contributing)
+-   [License](#license)
 
 ## Description
 
 This project demonstrates a basic setup of a NestJS application with GraphQL. It includes the following features:
-- CRUD operations for authors and posts.
-- Custom resolvers for complex queries and mutations.
-- Integration with a database for persistent storage.
+
+-   CRUD operations for authors and posts.
+-   Custom resolvers for complex queries and mutations.
+-   Integration with a database for persistent storage.
 
 ## Installation
 
 To get started with this project, follow these steps:
 
 1. **Clone the repository:**
+
     ```bash
     git clone https://github.com/nduongg04/nestjs-graphql-code-only.git
     cd nestjs-graphql-code-only
     ```
 
 2. **Install dependencies:**
+
     ```bash
     npm install
     ```
 
 3. **Set up the database:**
+
     - Ensure you have a running instance of your database (e.g., PostgreSQL, MySQL).
     - Update the database URL in `.env` file.
-	```env
-	DATABASE_URL="your-postgresql-url"
-	```
+
+    ```env
+    DATABASE_URL="your-postgresql-url"
+    ```
 
 4. **Run the application:**
     ```bash
@@ -53,36 +58,154 @@ Once the application is running, you can access the GraphQL playground at `http:
 
 ### Example Queries and Mutations
 
-#### Author:
+#### Author
 
 **Query: Get all authors**
 ```graphql
 query {
-  authors {
-    id
-    name
-    posts {
-      id
-      title
+    authors {
+        id
+        name
+        posts {
+            id
+            title
+        }
     }
+}
+```
+
+**Query: Get an author by id**
+
+```graphql
+query ($authorId: Int!) {
+    author(id: $authorId) {
+        id
+        firstName
+        lastName
+        posts {
+            id
+            title
+            votes
+        }
+    }
+}
+```
+
+**Mutation: Create an author**
+```graphql
+mutation CreatePost($authorId: Int! = 1, $post: NewPostInput! =  {
+    title: "Post title",
+    votes: 0
+  }) {
+    createPost(authorId: $authorId, post: $post) {
+        id
+        firstName
+        lastName
+        posts {
+            id
+            title
+            votes
+        }
+    }
+}
+```
+
+**Mutation: Update an author**
+```graphql
+mutation UpdateAuthor($updateAuthorInput: UpdateAuthorInput! = {
+	id: 1,
+    firstName: "first name",
+    lastName: "last name",
+}) {
+    updateAuthor(updateAuthorInput: $updateAuthorInput) {
+        id
+        firstName
+        lastName
+    }
+}
+```
+
+**Mutation: Delete an author**
+```graphql
+mutation Mutation($authorId: Int! = 1) {
+    deleteAuthor(id: $authorId) {
+        id
+        firstName
+        lastName
+        posts {
+            id
+            title
+            votes
+        }
+    }
+}
+```
+
+**Mutation: Create a post**
+
+```graphql
+mutation CreatePost($authorId: Int! = 1, $post: NewPostInput! = {
+	title: "Post title",
+	votes: 0
+}) {
+    createPost(authorId: $authorId, post: $post) {
+        id
+        firstName
+        lastName
+        posts {
+            id
+            title
+            votes
+        }
+    }
+}
+```
+
+#### Post
+**Query: Get all posts**
+```graphql
+query Posts{
+  posts {
+    id
+    title
+    votes
   }
 }
 ```
 
-**Query: Get author by id**
+**Query: Get a post by id**
 ```graphql
-query ($authorId: Int!) {
-  author(id: $authorId) {
+query Post($postId: Int! = 1){
+  post(id: $postId) {
     id
-    firstName
-    lastName
-    posts {
-      id
-      title
-      votes
-    }
+    title
+    votes
   }
-} 
+}
 ```
 
+**Mutation: Update a post**
+```graphql
+mutation UpdatePost($updatePostInput: UpdatePostInput! = {
+	id: 1,
+	title: "Post title",
+	votes: 1
+}){
+  updatePost(updatePostInput: $updatePostInput) {
+    id
+    title
+    votes
+  }
+}
+```
 
+**Mutation: Delete an post**
+```graphql
+mutation DeletePost($postId: Int! = 1){
+  deletePost(id: $postId) {
+    id
+    title
+    votes
+  }
+}
+```
