@@ -8,9 +8,9 @@ This project is a NestJS application that uses GraphQL for API interactions. It 
 -   [Installation](#installation)
 -   [Usage](#usage)
 -   [GraphQL Schema](#graphql-schema)
--   [Resolvers](#resolvers)
+<!-- -   [Resolvers](#resolvers)
 -   [Services](#services)
--   [Contributing](#contributing)
+-   [Contributing](#contributing) -->
 -   [License](#license)
 
 ## Description
@@ -207,5 +207,78 @@ mutation DeletePost($postId: Int! = 1){
     title
     votes
   }
+}
+```
+## GraphQL Schema
+`schema.gql`
+```graphql
+type Post {
+  id: Int!
+  title: String!
+  votes: Int
+}
+
+type Author {
+  id: Int!
+  firstName: String
+  lastName: String
+  posts: [Post!]!
+}
+
+type Query {
+  helloWorld: String!
+  authors(queryAuthorsInput: QueryAuthorsInput): [Author!]!
+  author(id: Int!): Author!
+  posts: [Post!]!
+  post(id: Int!): Post!
+}
+
+input QueryAuthorsInput {
+  skip: Int
+  take: Int
+  orderBy: AuthorOrderByWithRelationInput
+}
+
+input AuthorOrderByWithRelationInput {
+  id: SortOrder!
+  firstName: SortOrder!
+  lastName: SortOrder!
+}
+
+enum SortOrder {
+  asc
+  desc
+}
+
+type Mutation {
+  createAuthor(newAuthorInput: NewAuthorInput!): Author!
+  updateAuthor(updateAuthorInput: UpdateAuthorInput!): Author!
+  createPost(authorId: Int!, post: NewPostInput!): Author!
+  deleteAuthor(id: Int!): Author!
+  updatePost(updatePostInput: UpdatePostInput!): Post!
+  deletePost(id: Int!): Post!
+}
+
+input NewAuthorInput {
+  firstName: String!
+  lastName: String!
+  posts: [NewPostInput!]
+}
+
+input NewPostInput {
+  title: String!
+  votes: Float!
+}
+
+input UpdateAuthorInput {
+  id: Int!
+  firstName: String
+  lastName: String
+}
+
+input UpdatePostInput {
+  id: Int!
+  title: String
+  votes: Int
 }
 ```
