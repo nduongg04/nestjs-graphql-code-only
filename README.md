@@ -51,7 +51,6 @@ To get started with this project, follow these steps:
     ```bash
     npm run start
     ```
-
 ## Usage
 
 Once the application is running, you can access the GraphQL playground at `http://localhost:3000/graphql` to interact with the API.
@@ -113,7 +112,7 @@ mutation CreatePost($authorId: Int! = 1, $post: NewPostInput! =  {
 **Mutation: Update an author**
 ```graphql
 mutation UpdateAuthor($updateAuthorInput: UpdateAuthorInput! = {
-	id: 1,
+    id: 1,
     firstName: "first name",
     lastName: "last name",
 }) {
