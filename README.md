@@ -26,8 +26,8 @@ To get started with this project, follow these steps:
 
 1. **Clone the repository:**
     ```bash
-    git clone https://github.com/your-username/your-repo-name.git
-    cd your-repo-name
+    git clone https://github.com/nduongg04/nestjs-graphql-code-only.git
+    cd nestjs-graphql-code-only
     ```
 
 2. **Install dependencies:**
@@ -37,7 +37,10 @@ To get started with this project, follow these steps:
 
 3. **Set up the database:**
     - Ensure you have a running instance of your database (e.g., PostgreSQL, MySQL).
-    - Update the database configuration in `src/config/database.config.ts`.
+    - Update the database URL in `.env` file.
+	```env
+	DATABASE_URL="your-postgresql-url"
+	```
 
 4. **Run the application:**
     ```bash
@@ -50,7 +53,9 @@ Once the application is running, you can access the GraphQL playground at `http:
 
 ### Example Queries and Mutations
 
-#### Query: Get all authors
+#### Author:
+
+**Query: Get all authors**
 ```graphql
 query {
   authors {
@@ -62,8 +67,9 @@ query {
     }
   }
 }
+```
 
-#### Query: Get author by id
+**Query: Get author by id**
 ```graphql
 query ($authorId: Int!) {
   author(id: $authorId) {
@@ -76,4 +82,7 @@ query ($authorId: Int!) {
       votes
     }
   }
-}
+} 
+```
+
+
