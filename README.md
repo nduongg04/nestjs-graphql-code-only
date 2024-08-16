@@ -8,9 +8,9 @@ This project is a NestJS application that uses GraphQL for API interactions. It 
 -   [Installation](#installation)
 -   [Usage](#usage)
 -   [GraphQL Schema](#graphql-schema)
-<!-- -   [Resolvers](#resolvers)
+-   [Resolvers](#resolvers)
 -   [Services](#services)
--   [Contributing](#contributing) -->
+-   [Contributing](#contributing)
 -   [License](#license)
 
 ## Description
@@ -209,70 +209,25 @@ mutation DeletePost($postId: Int! = 1){
 }
 ```
 ## GraphQL Schema
-`schema.gql`
+The GraphQL schema is defined in `schema.gql`. Here are some key types and inputs: 
+*Types*
 ```graphql
+type Author {
+  id: Int!
+  name: String!
+  posts: [Post!]!
+}
+
 type Post {
   id: Int!
   title: String!
-  votes: Int
+  votes: Int!
 }
-
-type Author {
-  id: Int!
-  firstName: String
-  lastName: String
-  posts: [Post!]!
-}
-
-type Query {
-  helloWorld: String!
-  authors(queryAuthorsInput: QueryAuthorsInput): [Author!]!
-  author(id: Int!): Author!
-  posts: [Post!]!
-  post(id: Int!): Post!
-}
-
-input QueryAuthorsInput {
-  skip: Int
-  take: Int
-  orderBy: AuthorOrderByWithRelationInput
-}
-
-input AuthorOrderByWithRelationInput {
-  id: SortOrder!
-  firstName: SortOrder!
-  lastName: SortOrder!
-}
-
-enum SortOrder {
-  asc
-  desc
-}
-
-type Mutation {
-  createAuthor(newAuthorInput: NewAuthorInput!): Author!
-  updateAuthor(updateAuthorInput: UpdateAuthorInput!): Author!
-  createPost(authorId: Int!, post: NewPostInput!): Author!
-  deleteAuthor(id: Int!): Author!
-  updatePost(updatePostInput: UpdatePostInput!): Post!
-  deletePost(id: Int!): Post!
-}
-
-input NewAuthorInput {
-  firstName: String!
-  lastName: String!
-  posts: [NewPostInput!]
-}
-
-input NewPostInput {
-  title: String!
-  votes: Float!
-}
-
-input UpdateAuthorInput {
-  id: Int!
-  firstName: String
-  lastName: String
+```
+*Inputs*
+```graphql
+input CreateAuthorInput {
+  name: String!
 }
 
 input UpdatePostInput {
@@ -281,3 +236,57 @@ input UpdatePostInput {
   votes: Int
 }
 ```
+
+## Resolvers
+Resolvers are responsible for handling GraphQL queries and mutations. Here are some key resolvers:
+### Authors Resolver
+```typescript
+@Resolver(of => Author)
+export class AuthorsResolver {
+  // ...other methods
+
+  @Mutation(returns => AuthorWithPosts)
+  async deleteAuthor(@Args('id', { type: () => Int }) id: number): Promise<AuthorWithPosts> {
+    // Implementation
+  }
+}
+```
+
+### Posts Resolver
+```typescript
+@Resolver(of => Post)
+export class PostsResolver {
+  @Mutation(returns => Post)
+  async updatePost(@Args('updatePostInput', { type: () => UpdatePostInput }) updatePostInput: UpdatePostInput) {
+    // Implementation
+  }
+
+  @Mutation(returns => Post)
+  async deletePost(@Args('id', { type: () => Int }) id: number) {
+    // Implementation
+  }
+}
+```
+
+## Services
+Services contain the business logic and interact with the database. Here are some key services:
+### Authors Service
+```typescript
+@Injectable()
+export class AuthorsService {
+  // Methods for CRUD operations
+}
+```
+
+### Posts Service
+```typescript
+@Injectable()
+export class PostsService {
+  // Methods for CRUD operations
+}
+```
+## Contributing
+Contributions are welcome! Please open an issue or submit a pull request for any improvements or bug fixes.
+
+## License
+This project is licensed under the MIT License.
