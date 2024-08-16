@@ -245,8 +245,8 @@ Resolvers are responsible for handling GraphQL queries and mutations. Here are s
 export class AuthorsResolver {
   // ...other methods
 
-  @Mutation(returns => AuthorWithPosts)
-  async deleteAuthor(@Args('id', { type: () => Int }) id: number): Promise<AuthorWithPosts> {
+  @Mutation(returns => Author)
+  async deleteAuthor(@Args('id', { type: () => Int }) id: number) {
     // Implementation
   }
 }
